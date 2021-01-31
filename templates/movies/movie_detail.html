@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block page_title %}
+  {{movie.title}}
+{% endblock page_title %}
+
+{% block content %}
+
+<div class="flex flex-col items-center bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 mt-5">
+  <div class="flex w-full h-75vh p-2 mb-10">
+    <div class="w-1/2 h-full rounded-md bg-cover bg-center shadow-2xl" style="background-image: url({{movie.cover_image.url}});">
+
+    </div>
+    <div class="w-1/2 h-full rounded-md border border-gray-400 ml-10 shadow-2xl p-4">
+      <div class="w-full h-full flex justify-center flex-col items-center">
+        <h2 class="font-bold text-4xl">{{movie.title}}</h2>
+        <div class="flex items-center my-5">
+          <div class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">{{movie.year}}</div>
+          <div class="bg-orange-400 text-white px-3 shadow-md py-1 rounded-full mx-4"><a href="{% url 'categories:category' movie.category.pk%}">{{movie.category}}</a></div>
+          <div class="text-red-600">♥︎{{movie.rating}}</div>
+        </div>
+        <div class="my-5">Director:
+          <div class="inline-block bg-white shadow-md rounded-full px-3 py-1 text-sm font-semibold text-gray-700">
+            <a href="{% url 'people:person' movie.director.pk%}" class="block">{{movie.director}}</a></div>
+        </div>
+        <div class="my-5 flex items-center">
+          <div>Show Cast</div>
+          <div class="animate-bounce w-6 h-6 ml-5 showBtn">
+            <i class="fas fa-arrow-down cursor-pointer"></i>
+          </div>
+        </div>
+        <div class="cast_lists noshow transition duration-1000">
+          {% for i in movie.cast.all %} 
+            <div class="inline-block bg-white shadow-md rounded-full px-3 py-1 text-sm font-semibold text-gray-700"><a href="{% url 'people:person' i.pk%}">{{i}}</a></div> 
+          {% endfor %}
+        </div>
+        <div class="flex">
+          <a class="bg-blue-400 hover:bg-blue-600 text-white font-bold mt-4 py-2 px-4 rounded" href="{% url 'movies:update' movie.pk %}">Edit Movie</a>
+          {% if user.is_authenticated %}
+            {% include "mixins/fav_button.html" with obj=movie kind='movie' %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="w-full">
+    {% if user.is_authenticated %}
+      <span class="font-semibold text-2xl text-center w-full block mb-5">Write your review</span>
+      <form action="{% url 'reviews:movie-create' movie.pk%}" method="POST" class="w-full mx-auto flex flex-col">
+          {% csrf_token%}
+          {{form}}
+          <button class="btn_link">Submit Review</button>
+      </form>
+    {% endif %}
+  </div>
+  <div class="w-full mt-10">
+    
+    {% if movie.reviews.count != 0 %}
+      {% include 'mixins/reviews/review_title.html' %}
+      {% for review in movie.reviews.all %}
+        {% include 'mixins/reviews/review.html' with review=review linked_url='reviews:delete-movie-review' type=movie %}
+      {% endfor%}
+      {% endif %}
+
+  </div>
+</div>
+
+{% endblock content %}

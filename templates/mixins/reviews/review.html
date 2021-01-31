@@ -1,0 +1,21 @@
+<div class="w-full flex border-b border-lightblack mb-5 items-center py-5">
+    <div class="w-1/3 flex justify-between px-10">
+        <div class="w-10 h-10 rounded-full flex justify-center items-center text-2xl font-bold bg-gray-400 text-white">{{review.created_by.first_name|first}}</div>
+        <div class="flex items-center">
+        {% for i in "x"|rjust:review.rating%}
+            <i class="fas fa-star text-red-600 mr-1"></i>
+        {% endfor %}
+            
+        </div>
+    </div>
+    <div class="w-2/3 flex justify-between px-9">
+        {{review.text}}
+        
+        {% if review.created_by == user %}
+            <a href="{% url linked_url type.pk review.pk%}">
+                <i class="fas fa-trash-alt hover:text-red-600 transition duration-300"></i>
+            </a>
+        {% endif %}
+            
+    </div>
+</div>

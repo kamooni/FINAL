@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+  {{user.first_name}}'s FavList
+{% endblock page_title %}
+
+
+{% block content %}
+
+    <div class="w-full">
+        {% include 'mixins/user_card.html' %}
+        <div class="w-full flex flex-col justify-center items-center mt-20">
+            <h2 class="text-4xl font-semibold border-b-2 text-gray-200 border-green-500 mb-5">Fav Movies</h2>
+            <div class="flex w-full flex-wrap">
+            {% for movie in user_favlist.movies.all %}
+                {% include 'mixins/movie.html' with movie=movie%}
+            {% endfor %}
+            </div>
+        </div>
+        <div class="w-full flex flex-col justify-center items-center mt-20">
+            <h2 class="text-4xl font-semibold border-b-2 text-gray-200 border-green-500 mb-5">Fav Books</h2>
+            <div class="flex w-full flex-wrap">
+                {% for book in user_favlist.books.all %}
+                    {% include 'mixins/book.html' with book=book%}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %} 

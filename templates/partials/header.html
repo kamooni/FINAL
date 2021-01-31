@@ -1,0 +1,23 @@
+  <header id="navbar" class="navbar_v1">
+    <div class="flex items-center h-full">
+      <a href="{% url 'core:home' %}" class="font-medium text-2xl mr-10 text-red-600">KAMOONI</a>
+      <a href="{% url 'movies:list'%}" class="navbar_link">Movies</a>
+      <a href="{% url 'books:list'%}" class="mx-5 navbar_link">Books</a>
+      <a href="{% url 'people:list'%}" class="navbar_link">People</a>
+    </div>
+    <div class="flex items-center h-full">
+      <a href="{% url 'core:search' %}" class="navbar_link">Search</a>
+      {% if user.is_authenticated %}
+        
+        {% if user.list %}
+          <a href="{% url 'favs:see'%}" class="ml-5 navbar_link">Favs</a>
+        {% endif %}
+          
+        <a href="{% url 'users:profile' user.pk%}" class="mx-5 navbar_link">My Profile</a>
+        <a href="{% url 'users:logout' %}" class="navbar_link">LogOut</a>
+      {% else %}
+        <a href="{% url 'users:login' %}" class="mx-5 navbar_link">LogIn</a>
+        <a href="{% url 'users:signup' %}" class="navbar_link">Sign Up</a>
+      {% endif %}
+    </div>
+  </header>

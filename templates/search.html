@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+  Search
+{% endblock page_title %}
+
+
+{% block content %}
+
+<div class="w-full">
+  <div class="rounded-md border border-gray-400 shadow-2xl mt-10 p-5">
+    <form class="flex mb-2" method="GET"> 
+      <input name="term" class="shadow border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Search Movie, Book or Person" />
+      <button class="bg-transparent hover:bg-gray-200 text-gray-200 font-semibold hover:text-lightblack ml-2 py-2 px-4 border border-gray-200 hover:border-transparent rounded">Search</button>
+    </form>
+
+
+    <h3 class="block text-gray-700 text-center text-sm font-bold mb-5 mt-10">
+      {% if term %}
+        <span class="text-2xl font-semibold text-gray-200">
+        Searching by: {{term}}
+        </span>
+      {% else %}
+        <span class="text-2xl font-semibold text-gray-200">
+        Categories
+        </span>
+      {% endif %}
+    </h3>
+    {% if not term %}
+      <div class="inline-block relative w-full flex flex-wrap">
+        {% for category in categories %}
+          <div class="category_btn">
+            <a href="{% url 'categories:category' category.pk %}">{{category.name}}</a>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %} 
+  </div>
+  {% if term %}
+  <div class="mt-10">
+      <h3 class="block text-gray-200 text-2xl font-bold mb-10 mt-10">
+        {% if not movies %}
+          No Movies Found
+        {% else %}
+          Movies
+        {% endif %}
+      </h3>
+      <div class="flex w-full flex-wrap">
+        {% for movie in movies %}
+          {% include "mixins/movie.html" with movie=movie %}
+        {% endfor %}
+        </div>
+  </div>
+  <div class="mt-10">
+      <h3 class="block text-gray-200 text-2xl font-bold mb-10 mt-10">
+        {% if not books %}
+          No Books Found
+        {% else %}
+          Books
+        {% endif %}
+      </h3>
+      <div class="flex w-full flex-wrap">
+      {% for book in books %}
+        {% include "mixins/book.html" with book=book %}
+      {% endfor %}
+      </div>
+  </div>
+  <div class="mt-10">
+      <h3 class="block text-gray-200 text-2xl font-bold mb-10 mt-10">
+        {% if not people %}
+          No People Found
+        {% else %}
+          People
+        {% endif %}
+      </h3>
+      <div class="flex w-full flex-wrap">
+        {% for person in people %}
+          {% include "mixins/person.html" with person=person %}
+        {% endfor %}
+        </div>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock content %}

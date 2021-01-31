@@ -1,0 +1,19 @@
+<div class="w-1/2 mt-20 py-24 flex flex-col justify-center items-center mx-auto rounded-md bg-white">
+    <h1 class="text-3xl font-medium">{{user.first_name}}'s Profile</h1>
+    <div class="w-16 h-16 my-5 text-xl font-semibold text-white rounded-full bg-gray-500 flex justify-center items-center">{{user.first_name|first}}</div>
+    <h2 class="text-lg mb-5">{{user.bio}}</h2>
+        
+    <div class="flex mb-5">
+        
+        {% if user.fav_movie_cat %}
+            <span class="category_btn text-center"><a href="{% url 'categories:category' user.fav_movie_cat.pk%}">{{user.fav_movie_cat}}</a></span></h2>
+        {% endif %}
+
+        {% if user.fav_book_cat %}
+            <span class="category_btn text-center"><a href="{% url 'categories:category' user.fav_book_cat.pk%}">{{user.fav_book_cat}}</a></span></h2>
+        {% endif %}            
+    </div>
+    
+    <a href="{% url 'users:update' %}" class="w-1/2 py-5 rounded-md bg-lightblack text-white text-center text-2xl font-semibold mt-2">Edit Profile</a>
+        
+</div>

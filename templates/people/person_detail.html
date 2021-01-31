@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block page_title %}
+  {{person.name}}
+{% endblock page_title %}
+
+{% block content %}
+
+<div class="flex flex-col items-center bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 mt-5">
+  <div class="flex w-full h-75vh p-2 mb-10">
+    <div class="w-1/2 h-full rounded-md bg-cover bg-center shadow-2xl" style="background-image: url({{person.photo.url}});">
+
+    </div>
+    <div class="w-1/2 h-full rounded-md border border-gray-400 ml-10 shadow-2xl p-4">
+      <div class="w-full h-full flex justify-center flex-col items-center">
+        <h2 class="font-bold text-4xl">{{person.name}}</h2>
+        <div class="flex items-center my-5">
+          <div class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">{{person.kind}}</div>
+        </div>
+        <div class="my-5 flex items-center">
+          <div>Show Representative Work</div>
+          <div class="animate-bounce w-6 h-6 ml-5 showBtn">
+            <i class="fas fa-arrow-down cursor-pointer"></i>
+          </div>
+        </div>
+        <div class="cast_lists noshow transition duration-1000">
+          
+          {% if person.kind == "director" %}
+            {% for movie in person.movies.all %} 
+              <div class="inline-block bg-white shadow-md rounded-full px-3 py-1 text-sm font-semibold text-gray-700"><a href="{% url 'movies:movie' movie.pk%}">{{movie}}</a></div> 
+            {% endfor %}
+          {% elif person.kind == "writer"%}
+            {% for book in person.books.all %} 
+            <div class="inline-block bg-white shadow-md rounded-full px-3 py-1 text-sm font-semibold text-gray-700"><a href="{% url 'books:book' book.pk%}">{{book}}</a></div> 
+            {% endfor %}
+          {% else %}
+            {% for movie in person.movie_set.all %}
+              <div class="inline-block bg-white shadow-md rounded-full px-3 py-1 text-sm font-semibold text-gray-700"><a href="{% url 'movies:movie' movie.pk%}">{{movie}}</a></div> 
+            {% endfor%}
+          {% endif %}
+
+            
+        </div>
+          <a class="bg-blue-400 hover:bg-blue-600 text-white font-bold mt-4 py-2 px-4 rounded" href="{% url 'people:update' person.pk %}">Edit Person</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
